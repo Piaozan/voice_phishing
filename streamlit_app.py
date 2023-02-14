@@ -63,7 +63,7 @@ else: # 기본적인 전월
     premonth = mon-1
     preyear = ye
 
-premonth_count = df.loc[(df['DM_Y'] == preyear) & (df['DM_M'] == premonth) & (df['DM_M'] >= 1)  & (df['도시'] == area)]['신고횟수'].sum()
+premonth_count = df.loc[(df['DM_Y'] == preyear) & (df['DM_M'] == premonth) & (df['도시'] == area)]['신고횟수'].sum()
 
 # 신고 건수 차이
 month_diff = int(month_count - premonth_count) # 오늘 - 전날 신고 건수
@@ -87,7 +87,7 @@ st.write('여기 정민 누나 부분이 들어갈거에요')
 # -------차트 부분---------
 # 월별 추이
 last_year = df.loc[(df['DM_Y'] == preyear) & (df['도시'] == area)]
-monthly_data = df.loc[(df['DM_Y'] == preyear) & (df['DM_M'] <= premonth) & (df['도시'] == area)]
+monthly_data = df.loc[(df['DM_Y'] == preyear) & (df['DM_M'] <= premonth) & (df['DM_M'] >= 1)  & (df['도시'] == area)]
 monthly_data = monthly_data.groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
 
 
@@ -111,7 +111,7 @@ tab1, tab2 = st.tabs(["작년 월별 신고 건수 추이", "올해 월별 신�
 with tab1:
     # Use the Streamlit theme.
     # This is the default. So you can also omit the theme argument.
-    st.plotly_chart(fig1, theme="streamlit")
+    st.plotly_chart(fig1, theme="streamlit", use_container_width=True)
 with tab2:
     # Use the native Plotly theme.
     st.plotly_chart(fig2, theme='streamlit', use_container_width=True)
