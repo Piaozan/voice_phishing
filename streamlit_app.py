@@ -63,7 +63,7 @@ else: # 기본적인 전월
     premonth = mon-1
     preyear = ye
 
-premonth_count = df.loc[(df['DM_Y'] == preyear) & (df['DM_M'] == premonth) & (df['도시'] == area)]['신고횟수'].sum()
+premonth_count = df.loc[(df['DM_Y'] == preyear) & (df['DM_M'] == premonth) & (df['DM_M'] >= 1)  & (df['도시'] == area)]['신고횟수'].sum()
 
 # 신고 건수 차이
 month_diff = int(month_count - premonth_count) # 오늘 - 전날 신고 건수
