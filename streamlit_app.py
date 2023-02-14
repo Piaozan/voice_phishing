@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plost
 from datetime import datetime, timedelta
 import datetime
 from PIL import Image
