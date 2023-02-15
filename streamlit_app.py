@@ -27,7 +27,7 @@ with open('style.css') as f:
 
     
 # 로고 부분
-logo = Image.open('logo.png')
+logo = Image.open('logo.png', use_column_width=True)
 st.image(logo)
 
 st.title('보이스 피싱')
