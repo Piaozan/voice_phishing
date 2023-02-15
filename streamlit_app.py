@@ -30,7 +30,7 @@ with open('style.css') as f:
 logo = Image.open('logo.png')
 st.image(logo)
 
-st.title('보이스 피싱 📞')
+st.title('보이스 피싱')
 
 # 데이터 불러오기
 # df = pd.read_csv('C:/Users/park/comp/vp_count.csv')
