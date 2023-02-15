@@ -186,6 +186,63 @@ for i in range(len(a['Title'])):
     
 
 # -------차트 부분---------
+# 전체 일별 지역별 신고 건수
+all_data = df.groupby(['ymd', '도시'])['신고횟수'].sum().reset_index()
+recent_days = all_data.loc[(all_data['ymd'] < date) & (all_data['도시'] == area)][-7:] # 최근 7일
+recent_months = all_data.loc[(all_data['ymd'] < date) & (all_data['도시'] == area)][-30:] # 최근 30일
+recent_years = all_data.loc[(all_data['ymd'] < date) & (all_data['도시'] == area)][-365:] # 최근 1년
+
+
+df = px.data.gapminder()
+
+st.subheader('신고건수 추이')
+# 최근 7일
+fig1 = px.bar(
+    recent_days,
+    x="ymd",
+    y="신고횟수", text_auto='.2s'
+)
+
+fig1.update_layout(xaxis_title=None)
+
+# 최근 30일
+fig2 = px.line(
+    recent_months,
+    x="ymd",
+    y="신고횟수"
+)
+fig2.update_layout(xaxis_title=None)
+
+# 최근 1년
+fig3 = px.line(
+    recent_years,
+    x="ymd",
+    y="신고횟수",
+)
+fig3.update_layout(xaxis_title=None)
+
+
+
+tab1, tab2, tab3 = st.tabs(["최근7일", "최근30일", "최근1년"])
+with tab1:
+    # Use the Streamlit theme.
+    # This is the default. So you can also omit the theme argument.
+    st.plotly_chart(fig1, theme="streamlit", use_container_width=True)
+with tab2:
+    # Use the native Plotly theme.
+    st.plotly_chart(fig2, theme='streamlit', use_container_width=True)
+
+with tab3:
+    # Use the native Plotly theme.
+    st.plotly_chart(fig3, theme='streamlit', use_container_width=True)
+
+
+
+
+
+
+
+
 # 월별 추이
 last_year = df.loc[(df['DM_Y'] == preyear) & (df['도시'] == area)].groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
 monthly_data = df.loc[(df['DM_Y'] == ye) & (df['DM_M'] <= mon) & (df['DM_M'] >= 1) & (df['DM_D'] <= pre_d) & (df['도시'] == area)]
