@@ -239,45 +239,6 @@ with tab3:
 
 
 
-
-
-
-
-# 월별 추이
-last_year = df.loc[(df['DM_Y'] == preyear) & (df['도시'] == area)].groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
-monthly_data = df.loc[(df['DM_Y'] == ye) & (df['DM_M'] <= mon) & (df['DM_M'] >= 1) & (df['DM_D'] <= pre_d) & (df['도시'] == area)]
-monthly_data = monthly_data.groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
-
-
-df = px.data.gapminder()
-# 작년 한해
-fig1 = px.bar(
-    last_year,
-    x="DM_M",
-    y="신고횟수",
-)
-
-
-# 올해 현재까지
-fig2 = px.bar(
-    monthly_data,
-    x="DM_M",
-    y="신고횟수",
-)
-
-tab1, tab2 = st.tabs(["작년 월별 신고 건수 추이", "올해 월별 신고 건수 추이"])
-with tab1:
-    # Use the Streamlit theme.
-    # This is the default. So you can also omit the theme argument.
-    st.plotly_chart(fig1, theme="streamlit", use_container_width=True)
-with tab2:
-    # Use the native Plotly theme.
-    st.plotly_chart(fig2, theme='streamlit', use_container_width=True)
-
-
-    
-    
-
 # 이미지 부분
 map_info = Image.open('info.jpg')
 st.image(map_info)
