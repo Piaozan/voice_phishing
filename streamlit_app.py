@@ -239,7 +239,7 @@ with tab3:
     st.plotly_chart(fig3, theme='streamlit', use_container_width=True)
 
     
-st.caption('드래그 : 차트확대 | 더블 클릭 : 원래크기')
+st.caption('* 드래그 : 차트확대 | 더블 클릭 : 원래크기')
 
 
 # 이미지 부분
