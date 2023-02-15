@@ -195,6 +195,8 @@ recent_years = all_data.loc[(all_data['ymd'] < date) & (all_data['도시'] == ar
 df = px.data.gapminder()
 
 st.subheader('신고건수 추이')
+st.caption('* 드래그 : 차트확대 | 더블 클릭 : 원래크기')
+
 # 최근 7일
 fig1 = px.bar(
     recent_days,
@@ -238,8 +240,6 @@ with tab3:
     # Use the native Plotly theme.
     st.plotly_chart(fig3, theme='streamlit', use_container_width=True)
 
-    
-st.caption('* 드래그 : 차트확대 | 더블 클릭 : 원래크기')
 
 
 # 이미지 부분
