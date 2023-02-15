@@ -166,13 +166,128 @@ news['PubDate'] = news['PubDate'].dt.strftime('%m.%d') # 수정완료!
 
 
 
+################### 빈도체크########
+
+# 특수기호 제거 
+def extract_word(text):
+    hangul = re.compile('[^가-힣]') 
+    result = hangul.sub(' ', text) 
+    return result
+
+for i in range (len(news['Title'])):
+    news['Title'].iloc[i] = extract_word(news['Title'].iloc[i])
+    news['Description'].iloc[i] = extract_word(news['Description'].iloc[i])
+    
+
+# 리스트형으로 변환 
+title = news['Title']
+description = news['Description']
+
+from collections import Counter
+import re
+from konlpy.tag import Okt 
+
+okt = Okt()
+
+
+def news_words_list(news_title) :
+    news_words = []
+
+    for j in news_title:
+      a = okt.morphs(j)
+    
+      for i in a:
+          news_words.append(i)
+
+    return news_words
+
+
+
+## 제목과 본문 합치기
+title = news_words_list(title)
+description = news_words_list(description)
+title.extend(description)
+
+
+## 1글자 제거
+drop_one_words = [x for x in title if len(x)>1 ]
+
+with open('stopwords.txt', 'r',encoding = 'cp949') as f:
+    list_file = f.readlines()
+stopwords = list_file[0].split(",")
+
+final_words = [x for x in drop_one_words if x not in stopwords]
+
+
+# 데이터프레임으로 변환
+df = pd.DataFrame(final_words, columns = ['words'])
+
+
+# # 빈도측정 
+frequent = Counter(final_words).most_common()
+df = pd.DataFrame(frequent, columns=['keyword','count'])
+
+df.sort_values(by=['count'], ascending = False)
+
+df['rank'] = df['count'].rank(method='first', ascending = False)
+df['rank'] = df['rank'].astype(int)
+# .rank(axis=0, method='min', ascending=True)
+
+df = df[['rank','keyword']]
+df.columns = ['랭킹','실시간 관련 키워드']
+df.set_index('랭킹',inplace = True)
+
+# df.set_index('rank',inplace = True)
+st.dataframe(data = df.head(3))
+
+
+
+########################
+## 순서변경
+
+search = Keword('신종보이스피싱수법',100)
+news = info(search) 
+
+
+
+# 기본 정제 
+def basic_clear(text):
+    for i in range(len(text)) : 
+        text[i] = text[i].replace('<b>', '')
+        text[i] = text[i].replace('</b>', '')
+        text[i] = text[i].replace('&apos;', '') 
+        text[i] = text[i].replace('&quot;', '') 
+    return text
+
+basic_clear(news['Title'])
+basic_clear(news['Description'])
+
+
+## 중복 타이틀 제거
+for i in range(99):
+        if news['Title'].iloc[i][:8] == news['Title'].iloc[i+1][:8]:
+             news['Title'].iloc[i] = np.NaN
+news.dropna(inplace=True)
+news.info()
+
+import datetime
+
+
+# 날짜형으로 형변환
+
+news['PubDate'] = pd.to_datetime(news['PubDate'], format='%a, %d %b %Y  %H:%M:%S', exact=False) # 수정완료!
+
+# news['PubDate'] = 
+news['PubDate'] = news['PubDate'].dt.strftime('%m.%d') # 수정완료!
+
+
+
 a = news[['PubDate','Title','Link']].head(5)
 
 st.write('관련 뉴스')
 for i in range(len(a['Title'])):
     txt='{date}    [{txt}]({link})'.format(date =  a['PubDate'][i], txt = a['Title'][i], link = a['Link'][i])
     st.write(txt) 
-
 
 
 
