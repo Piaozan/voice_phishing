@@ -77,9 +77,99 @@ col2.metric("오늘", f'{day_count}건', day_diff) # # 오늘, 오늘 신고 건
 
 
 
-# --------트렌드----------
-st.write('여기 정민 누나 부분이 들어갈거에요')
 
+
+# --------트렌드----------
+
+
+###### api사용해서 불러오기 
+
+client_id = "7BluQlzfnBbWg8ALRkpq"
+client_secret = "ZTCPVEwdLc"
+url = 'https://openapi.naver.com/v1/search/news.json'
+
+
+
+# display_num : 한 번에 표시할 검색 결과 개수(기본값: 10, 최댓값: 100)
+def Keword( key, display_num):
+      # keyword = key
+      headers = { 'X-Naver-Client-Id': client_id
+                , 'X-Naver-Client-Secret': client_secret}
+      params = {'query': key
+                , 'display':display_num
+                ,'sort': 'sim' }
+
+      r = requests.get(url, params = params, headers = headers).json()['items']
+
+      return r 
+
+
+## 데이터프레임에 나눠담기
+def info(places):
+    PubDate = []
+    Title = []
+    Link = [] 
+    Description = []
+
+    for place in places:
+
+        PubDate.append(place['pubDate'])
+        Title.append(place['title'])
+        Link.append(place['originallink'])      
+        Description.append(place['description'])
+         
+
+    ar = np.array([PubDate, Title, Link, Description ]).T
+    dtf = pd.DataFrame(ar, columns=['PubDate', 'Title', 'Link', 'Description' ])
+
+    return dtf
+
+
+####가져오기 
+
+search = Keword('신종보이스피싱수법',100)
+news = info(search) 
+
+
+
+# 기본 정제 
+def basic_clear(text):
+    for i in range(len(text)) : 
+        text[i] = text[i].replace('<b>', '')
+        text[i] = text[i].replace('</b>', '')
+        text[i] = text[i].replace('&apos;', '') 
+        text[i] = text[i].replace('&quot;', '') 
+    return text
+
+basic_clear(news['Title'])
+basic_clear(news['Description'])
+
+
+## 중복 타이틀 제거
+for i in range(99):
+        if news['Title'].iloc[i][:8] == news['Title'].iloc[i+1][:8]:
+             news['Title'].iloc[i] = np.NaN
+news.dropna(inplace=True)
+news.info()
+
+import datetime
+
+
+# 날짜형으로 형변환
+
+news['PubDate'] = pd.to_datetime(news['PubDate'], format='%a, %d %b %Y  %H:%M:%S', exact=False) # 수정완료!
+
+# news['PubDate'] = 
+news['PubDate'] = news['PubDate'].dt.strftime('%m.%d') # 수정완료!
+
+
+
+a = news[['PubDate','Title','Link']].head(5)
+
+st.write('관련 뉴스')
+for i in range(len(a['Title'])):
+    txt='{date}    [{txt}]({link})'.format(date =  a['PubDate'][i], txt = a['Title'][i], link = a['Link'][i])
+    st.write(txt) 
 
 
 
