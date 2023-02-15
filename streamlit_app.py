@@ -204,6 +204,7 @@ fig1 = px.bar(
 )
 
 fig1.update_layout(xaxis_title=None)
+fig1.update_layout(yaxis_title='신고건수')
 
 # 최근 30일
 fig2 = px.line(
@@ -212,6 +213,7 @@ fig2 = px.line(
     y="신고횟수"
 )
 fig2.update_layout(xaxis_title=None)
+fig2.update_layout(yaxis_title='신고건수')
 
 # 최근 1년
 fig3 = px.line(
@@ -220,6 +222,7 @@ fig3 = px.line(
     y="신고횟수",
 )
 fig3.update_layout(xaxis_title=None)
+fig3.update_layout(yaxis_title='신고건수')
 
 
 
