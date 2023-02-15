@@ -4,6 +4,8 @@ from datetime import datetime, timedelta
 import datetime
 from PIL import Image
 import plotly.express as px
+import requests
+import numpy as np
 
 
 # 추후 배경 및 글자 색, 폰트 등 설정해야함
