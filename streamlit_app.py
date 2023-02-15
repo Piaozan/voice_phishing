@@ -6,10 +6,13 @@ from PIL import Image
 import plotly.express as px
 import requests
 import numpy as np
-from ckonlpy.tag import Twitter
-from collections import Counter
 import re
-
+from collections import Counter
+from konlpy.tag import Twitter
+from konlpy.tag import Okt 
+import os
+import sys
+import urllib.request
 
 
 # 추후 배경 및 글자 색, 폰트 등 설정해야함
@@ -87,7 +90,6 @@ col2.metric("오늘", f'{day_count}건', day_diff) # # 오늘, 오늘 신고 건
 
 # --------트렌드----------
 
-
 ###### api사용해서 불러오기 
 
 client_id = "7BluQlzfnBbWg8ALRkpq"
@@ -137,7 +139,6 @@ search = Keword('신종보이스피싱수법',100)
 news = info(search) 
 
 
-
 # 기본 정제 
 def basic_clear(text):
     for i in range(len(text)) : 
@@ -157,8 +158,6 @@ for i in range(99):
              news['Title'].iloc[i] = np.NaN
 news.dropna(inplace=True)
 news.info()
-
-import datetime
 
 
 # 날짜형으로 형변환
@@ -186,10 +185,6 @@ for i in range (len(news['Title'])):
 # 리스트형으로 변환 
 title = news['Title']
 description = news['Description']
-
-from collections import Counter
-import re
-from konlpy.tag import Okt 
 
 okt = Okt()
 
@@ -274,8 +269,6 @@ for i in range(99):
 news.dropna(inplace=True)
 news.info()
 
-import datetime
-
 
 # 날짜형으로 형변환
 
@@ -292,42 +285,6 @@ st.write('관련 뉴스')
 for i in range(len(a['Title'])):
     txt='{date}    [{txt}]({link})'.format(date =  a['PubDate'][i], txt = a['Title'][i], link = a['Link'][i])
     st.write(txt) 
-
-
-
-# -------차트 부분---------
-# 월별 추이
-last_year = df.loc[(df['DM_Y'] == preyear) & (df['도시'] == area)]
-monthly_data = monthly_data = df.loc[(df['DM_Y'] == ye) & (df['DM_M'] <= mon) & (df['DM_M'] >= 1) & (df['DM_D'] <= pre_d) & (df['도시'] == area)]
-monthly_data = monthly_data.groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
-
-
-df = px.data.gapminder()
-# 작년 한해
-fig1 = px.bar(
-    last_year,
-    x="DM_M",
-    y="신고횟수",
-)
-
-
-# 올해 현재까지
-fig2 = px.bar(
-    monthly_data,
-    x="DM_M",
-    y="신고횟수",
-)
-
-tab1, tab2 = st.tabs(["작년 월별 신고 건수 추이", "올해 월별 신고 건수 추이"])
-with tab1:
-    # Use the Streamlit theme.
-    # This is the default. So you can also omit the theme argument.
-    st.plotly_chart(fig1, theme="streamlit", use_container_width=True)
-with tab2:
-    # Use the native Plotly theme.
-    st.plotly_chart(fig2, theme='streamlit', use_container_width=True)
-
-
 
 
 # 은솔누나 부분
