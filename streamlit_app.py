@@ -25,6 +25,11 @@ st.set_page_config(page_title='보이스 피싱')
 with open('style.css') as f:
     st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
 
+    
+# 로고 부분
+logo = Image.open('logo.jpg')
+st.image(logo)
+
 st.title('보이스 피싱 📞')
 
 # 데이터 불러오기
@@ -216,6 +221,6 @@ with tab2:
     
     
 
-# 은솔누나 부분
+# 이미지 부분
 map_info = Image.open('info.jpg')
 st.image(map_info)
