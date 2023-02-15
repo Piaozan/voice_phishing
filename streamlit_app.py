@@ -15,6 +15,7 @@ import sys
 import urllib.request
 
 
+
 # 추후 배경 및 글자 색, 폰트 등 설정해야함
 # https://www.youtube.com/watch?v=Mz12mlwzbVU
 
@@ -27,8 +28,8 @@ with open('style.css') as f:
 st.title('보이스 피싱 📞')
 
 # 데이터 불러오기
-# df = pd.read_csv('C:/Users/park/comp/vp_count.csv')
-df = pd.read_csv('vp_count.csv')
+df = pd.read_csv('C:/Users/park/comp/vp_count.csv')
+# df = pd.read_csv('vp_count.csv')
 
 st.sidebar.header("금일 날짜 / 거주 지역:")
 date = st.sidebar.selectbox(
@@ -83,7 +84,6 @@ day_diff = int(day_count - preday_count) # 이번달 - 전달 신고 건수
 col1, col2 = st.columns(2)
 col1.metric("이번달", f'{month_count}건', month_diff) # 이번달, 이번달 신고 건수, 이번달 - 저번달
 col2.metric("오늘", f'{day_count}건', day_diff) # # 오늘, 오늘 신고 건수, 오늘 - 어제
-
 
 
 
