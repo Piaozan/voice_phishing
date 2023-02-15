@@ -179,7 +179,7 @@ a = news[['PubDate','Title','Link']].head(5)
 
 st.write('관련 뉴스')
 for i in range(len(a['Title'])):
-    txt='{date}    [{txt}]({link})'.format(date =  a['PubDate'][i], txt = a['Title'][i], link = a['Link'][i])
+    txt='{d} [{txt}]({link})'.format(d =  a['PubDate'].iloc[i], txt = a['Title'].iloc[i], link = a['Link'].iloc[i])
     st.write(txt) 
 
     
