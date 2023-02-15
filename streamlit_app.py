@@ -28,8 +28,8 @@ with open('style.css') as f:
 st.title('보이스 피싱 📞')
 
 # 데이터 불러오기
-df = pd.read_csv('C:/Users/park/comp/vp_count.csv')
-# df = pd.read_csv('vp_count.csv')
+# df = pd.read_csv('C:/Users/park/comp/vp_count.csv')
+df = pd.read_csv('vp_count.csv')
 
 st.sidebar.header("금일 날짜 / 거주 지역:")
 date = st.sidebar.selectbox(
