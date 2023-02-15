@@ -34,12 +34,12 @@ df = pd.read_csv('vp_count.csv')
 st.sidebar.header("금일 날짜 / 거주 지역:")
 date = st.sidebar.selectbox(
     "금일 날짜를 선택해 주세요:",
-    df['ymd'].unique()[365:]
+    df['ymd'].unique()[365:],index=250
 )
 
 area = st.sidebar.selectbox(
     "거주 지역을 선택해 주세요:",
-    df['도시'].unique()
+    df['도시'].unique(), index=5
 )
 
 df_selection = df.query(
