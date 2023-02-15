@@ -94,6 +94,7 @@ col2.metric("오늘", f'{day_count}건', day_diff) # # 오늘, 오늘 신고 건
 
 
 # --------트렌드----------
+
 ###### api사용해서 불러오기 
 
 client_id = "7BluQlzfnBbWg8ALRkpq"
@@ -157,34 +158,32 @@ basic_clear(news['Title'])
 basic_clear(news['Description'])
 
 
+# 날짜형으로 형변환
+
+news['PubDate'] = pd.to_datetime(news['PubDate'], format='%a, %d %b %Y  %H:%M:%S', exact=False) # 수정완료!
+news = news.sort_values(by='PubDate', ascending = False)
+
+
+news['PubDate'] = news['PubDate'].dt.strftime('%m.%d') # 수정완료!
+
+
 ## 중복 타이틀 제거
 for i in range(99):
         if news['Title'].iloc[i][:8] == news['Title'].iloc[i+1][:8]:
              news['Title'].iloc[i] = np.NaN
 news.dropna(inplace=True)
-news.info()
-
-import datetime
-
-
-# 날짜형으로 형변환
-
-news['PubDate'] = pd.to_datetime(news['PubDate'], format='%a, %d %b %Y  %H:%M:%S', exact=False) # 수정완료!
-
-# news['PubDate'] = 
-news['PubDate'] = news['PubDate'].dt.strftime('%m.%d') # 수정완료!
-
 
 
 a = news[['PubDate','Title','Link']].head(5)
+
 
 st.write('관련 뉴스')
 for i in range(len(a['Title'])):
     txt='{date}    [{txt}]({link})'.format(date =  a['PubDate'][i], txt = a['Title'][i], link = a['Link'][i])
     st.write(txt) 
-    
-    
 
+    
+    
 # -------차트 부분---------
 # 전체 일별 지역별 신고 건수
 all_data = df.groupby(['ymd', '도시'])['신고횟수'].sum().reset_index()
