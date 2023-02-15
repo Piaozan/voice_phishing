@@ -182,7 +182,7 @@ for i in range(len(a['Title'])):
 
 # -------차트 부분---------
 # 월별 추이
-last_year = df.loc[(df['DM_Y'] == preyear) & (df['도시'] == area)]
+last_year = df.loc[(df['DM_Y'] == preyear) & (df['도시'] == area)].groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
 monthly_data = df.loc[(df['DM_Y'] == ye) & (df['DM_M'] <= mon) & (df['DM_M'] >= 1) & (df['DM_D'] <= pre_d) & (df['도시'] == area)]
 monthly_data = monthly_data.groupby(['DM_Y','DM_M'])['신고횟수'].sum().reset_index()
 
