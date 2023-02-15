@@ -6,6 +6,10 @@ from PIL import Image
 import plotly.express as px
 import requests
 import numpy as np
+from ckonlpy.tag import Twitter
+from collections import Counter
+import re
+
 
 
 # 추후 배경 및 글자 색, 폰트 등 설정해야함
